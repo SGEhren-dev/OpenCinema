@@ -1,0 +1,74 @@
+html {
+	height: 100%;
+}
+
+:root {
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	line-height: 1.5;
+	font-weight: 400;
+
+	color-scheme: light dark;
+	color: rgba(255, 255, 255, 0.87);
+	background-color: #242424;
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+}
+
+#root {
+	height: 100%;
+	width: 100%;
+}
+
+.app-window {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	height: 100%;
+	line-height: 1.5715;
+	margin: 0;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: border-box; 
+	-moz-box-sizing: border-box; 
+	-webkit-box-sizing: border-box; 
+	-ms-box-sizing: border-box;
+}
+
+.right-align {
+	margin-left: auto;
+
+	&.row {
+		align-items: center;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+	}
+}
+
+&::-webkit-scrollbar-thumb {
+	background-color: #3d3d3d;
+	border-radius: 5px;
+	width: 8px;
+}
+
+&::-webkit-scrollbar {
+	background-color: #4d4d4d;
+	border-radius: 5px;
+	height: 10px;
+	width: 10px;
+}
+
+.ellipsize {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

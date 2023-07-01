@@ -1,0 +1,39 @@
+@import "../../Styles/Colors.less";
+
+.media-page {
+	display: flex;
+	flex-direction: row;
+	height: 100%;
+	width: 100%;
+
+	.ant-menu {
+		background-color: #1f1f1f;
+
+		svg {
+			margin-right: 8px;
+		}
+	}
+
+	.align-right {
+		max-height: 55vh;
+		padding: 0 10px;
+		position: relative;
+		overflow-x: auto;
+		width: 100%;
+
+		.actions {
+			align-items: center;
+			background-color: #1f1f1f;
+			display: flex;
+			flex-direction: row;
+			margin-bottom: 10px;
+			position: sticky;
+			top: 0;
+			z-index: 2;
+
+			& > button {
+				margin-left: 10px;
+			}
+		}
+	}
+}

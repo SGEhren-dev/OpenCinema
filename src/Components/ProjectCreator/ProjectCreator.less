@@ -1,0 +1,62 @@
+@import "../../Styles/Colors.less";
+
+.project-creator {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: 80px 120px;
+	width: 100%;
+
+	.project-toolbar {
+		align-items: center;
+		border-bottom: 1px solid #404040;
+		display: flex;
+		padding: 10px;
+		width: 100%;
+	}
+
+	.project-options-container {
+		padding: 50px 20px;
+		width: 100%;
+	}
+
+	.file-drag-area {
+		border: 1px dashed #404040;
+		border-radius: 10px;
+		display: flex;
+		flex-wrap: wrap;
+		font-size: 18px;
+		font-style: italic;
+		height: 30%;
+		justify-content: space-evenly;
+		padding: 15px;
+		width: 75%;
+
+		& > span {
+			margin: 20px 0;
+		}
+
+		.file-placeholder {
+			border: 1px solid #404040;
+			border-radius: 10px;
+			font-size: 12px;
+			height: 100px;
+			padding: 0 8px;
+			width: 150px;
+		}
+
+		&.center {
+			align-items: center;
+			flex-direction: column;
+		}
+	}
+
+	.action-bar {
+		align-items: center;
+		display: flex;
+		padding: 100px 20px;
+		justify-content: flex-end;
+		width: 100%;
+	}
+}
