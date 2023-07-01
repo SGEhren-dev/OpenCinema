@@ -8,8 +8,16 @@ jobs:
   Vitest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Runs Tests
-        run: |
-          npm i
-          vitest
+      - name: Checkout branch
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.17.0
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Run tests
+        run: Vitest
