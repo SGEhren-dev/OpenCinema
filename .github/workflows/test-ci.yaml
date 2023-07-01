@@ -1,0 +1,23 @@
+name: Unit Test CI
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  Vitest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.17.0
+
+      - name: Install deps
+        run: npm install
+
+      - name: Run tests
+        run: npm run test

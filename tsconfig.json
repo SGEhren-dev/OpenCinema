@@ -25,6 +25,7 @@
 			"Shared/*": [ "src/Shared/*" ]
 		},
 	},
-	"include": [ "src", "electron", "index.d.ts" ],
+	"exclude": [ "node_modules" ],
+	"include": [ "src", "electron", "index.d.ts", "__tests__" ],
 	"references": [ { "path": "./tsconfig.node.json" } ]
 }
