@@ -16,7 +16,8 @@
 		"build": "tsc && vite build && electron-builder",
 		"preview": "vite preview",
 		"lint": "npx eslint \"src/**/*.ts**\" --ext .ts --ext .tsx",
-		"test": "vitest --ui"
+		"test": "vitest",
+		"test:ui": "vitest --ui"
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^6.4.0",
