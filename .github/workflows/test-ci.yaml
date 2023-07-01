@@ -1,0 +1,15 @@
+name: Unit Test CI
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  Vitest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Runs Tests
+        run: |
+          npm i
+          vitest

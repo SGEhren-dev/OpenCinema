@@ -17,7 +17,7 @@ const defaultState: IEditorState = {
  * @param state The current reducer slice
  * @param action The new editor view being set
  */
-const handleSetEditorView = (state: IEditorState, action: PayloadAction<EditorView>) => {
+export const handleSetEditorView = (state: IEditorState, action: PayloadAction<EditorView>) => {
 	if (!action.payload) {
 		return;
 	}
@@ -29,7 +29,7 @@ const handleSetEditorView = (state: IEditorState, action: PayloadAction<EditorVi
  * @param state The current reducer slice
  * @param action Boolean value determining whether the video is playing or paused
  */
-const handleSetEditorPaused = (state: IEditorState, action: PayloadAction<boolean>) => {
+export const handleSetEditorPaused = (state: IEditorState, action: PayloadAction<boolean>) => {
 	state.paused = action.payload;
 };
 
@@ -37,7 +37,7 @@ const handleSetEditorPaused = (state: IEditorState, action: PayloadAction<boolea
  * @description Properly toggles the pause state of the current slice
  * @param state The current reducer slice
  */
-const handleToggleEditorPaused = (state: IEditorState) => {
+export const handleToggleEditorPaused = (state: IEditorState) => {
 	state.paused = !state.paused;
 };
 
@@ -45,7 +45,7 @@ const handleToggleEditorPaused = (state: IEditorState) => {
  * @description Properly toggles the preview between maximized and not-maximized
  * @param state The current reducer slice
  */
-const handleTogglePreviewMaximized = (state: IEditorState) => {
+export const handleTogglePreviewMaximized = (state: IEditorState) => {
 	state.previewMaximized = !state.previewMaximized;
 };
 
@@ -54,10 +54,14 @@ const handleTogglePreviewMaximized = (state: IEditorState) => {
  * @param state The current reducer slice
  * @param action The zoom level between 0 and 200, must be divisible by 10
  */
-const handleSetPreviewZoomLevel = (state: IEditorState, action: PayloadAction<number>) => {
+export const handleSetPreviewZoomLevel = (state: IEditorState, action: PayloadAction<number>) => {
+	if (action.payload === undefined) {
+		return;
+	}
+
 	const zoomLevel = action.payload;
 
-	if ((zoomLevel === 0 || zoomLevel > 200) && zoomLevel % 10 !== 0) {
+	if ((zoomLevel === 0 || zoomLevel > 200) || zoomLevel % 10 !== 0) {
 		return;
 	}
 
