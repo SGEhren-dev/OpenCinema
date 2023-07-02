@@ -1,7 +1,6 @@
 import { app, BrowserWindow, shell, ipcMain } from "electron";
 import { release } from "node:os";
 import { join } from "node:path";
-// import installExtension, { REDUX_DEVTOOLS } from "electron-devtools-installer";
 import { registerIPCHandlers } from "../IPC/IPCHandlers";
 
 // The built directory structure
@@ -55,7 +54,8 @@ async function createWindow() {
 		icon: join(process.env.PUBLIC, "favicon.ico"),
 		webPreferences: {
 			preload,
-			sandbox: false
+			sandbox: false,
+			webSecurity: false
 		},
 	});
 
@@ -85,7 +85,7 @@ async function createWindow() {
 
 app.whenReady().then(() => {
 	// [ REDUX_DEVTOOLS ].map((extension) => {
-	// 	installExtension?.(extension)
+	// 	install?.(extension)
 	// 		.then((name: string) => console.log(`Installed extension: ${ name }.`))
 	// 		.catch((error) => console.log("An error has occurred: ", error));
 	// });

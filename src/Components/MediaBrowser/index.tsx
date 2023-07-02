@@ -40,7 +40,7 @@ const items: MenuProps["items"] = [
 function RenderMyMediaPage() {
 	const page = useSelector(getMediaBrowserPage);
 
-	const pageToFilter = () => {
+	const getFilter = () => {
 		switch (page) {
 			case MediaBrowserPage.MY_AUDIO:
 				return ProjectMediaFilter.AUDIO;
@@ -52,7 +52,7 @@ function RenderMyMediaPage() {
 	};
 
 	const pageMedia = useSelector((state: IState) => {
-		return getFilteredProjectMedia(state, pageToFilter());
+		return getFilteredProjectMedia(state, getFilter());
 	});
 
 	const hasMedia = !pageMedia || pageMedia.length === 0;
@@ -60,9 +60,11 @@ function RenderMyMediaPage() {
 	const compositeClass = [ "media-content", noMediaClass ].join(" ");
 
 	const renderMedia = (file: IFile) => {
+		const uri = page === MediaBrowserPage.MY_IMAGES ? file.filePath : noVideo;
+
 		return (
 			<div key={ file.name } className="media-card">
-				<img className="thumbnail" src={ noVideo } />
+				<img className="thumbnail" src={ uri } />
 				{ file.name.split(".")?.[0] }
 			</div>
 		);

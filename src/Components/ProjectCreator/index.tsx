@@ -47,7 +47,8 @@ export default function ProjectCreator() {
 	const [ projectFps, setProjectFps ] = useState<number>(25);
 	const projectMedia = useSelector(getProjectMedia);
 	const setProjectMedia = (media: IFile | IFile[]) => dispatch(addProjectMedia(media));
-	const compositeFileDragClass = [ "file-drag-area", projectMedia.length === 0 ? "center" : "" ].join(" ");
+	const hasMedia = projectMedia.length > 0;
+	const compositeFileDragClass = [ "file-drag-area", !hasMedia ? "no-media" : "" ].join(" ");
 
 	const handleProjectTitleChange = (event: FormEvent<HTMLInputElement>) => {
 		setProjectTitle(event.currentTarget.value);
@@ -106,7 +107,7 @@ export default function ProjectCreator() {
 			</Fragment>
 		);
 
-		if (projectMedia.length > 0) {
+		if (hasMedia) {
 			content = (
 				<Fragment>
 					{ projectMedia.map(RenderFilePlaceholder) }

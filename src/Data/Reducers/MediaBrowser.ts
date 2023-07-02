@@ -3,7 +3,7 @@ import { MediaBrowserPage } from "Data/Objects/MediaBrowser";
 import { IMediaBrowserState } from "Interfaces";
 import { setMediaBrowserPage } from "Data/Actions/MediaBrowser";
 
-const defaultState: IMediaBrowserState = {
+export const defaultState: IMediaBrowserState = {
 	browserPage: MediaBrowserPage.MY_MEDIA
 };
 
