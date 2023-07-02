@@ -2,7 +2,7 @@ import { TimeUnits } from "@/Shared/Objects/Time";
 import { ActionReducerMapBuilder, createReducer, PayloadAction } from "@reduxjs/toolkit";
 import { IFile, ISaveState } from "Interfaces";
 import {
-	addMediaLocation, closeProject, createNewProject, deleteMediaLocation, setProjectTitle, setVideoFps,
+	addProjectMedia, closeProject, createNewProject, deleteProjectMedia, setProjectTitle, setVideoFps,
 	setVideoLength
 } from "Data/Actions/Save";
 import { clamp } from "Data/Utils/Math";
@@ -11,7 +11,7 @@ const defaultState: ISaveState = {
 	projectTitle: "",
 	videoLength: 4 * TimeUnits.MINUTES,
 	fps: 25,
-	mediaLocations: [ ],
+	projectMedia: [ ],
 	saveLocation: ""
 };
 
@@ -51,24 +51,26 @@ const handleSetProjectFps = (state: ISaveState, action: PayloadAction<number>) =
  * @param state Current save state
  * @param action The location of user media
  */
-const handleAddMediaLocation = (state: ISaveState, action: PayloadAction<IFile>) => {
+const handleAddProjectMedia = (state: ISaveState, action: PayloadAction<IFile | IFile[]>) => {
 	if (!action.payload) {
 		return;
 	}
 
-	state.mediaLocations = [ ...new Set(state.mediaLocations), action.payload ];
+	const media = Array.isArray(action.payload) ? action.payload : [ action.payload ];
+
+	state.projectMedia = [ ...new Set(state.projectMedia), ...media ];
 };
 
 /**
  * @param state Current save state
  * @param action The location to of user media to be removed
  */
-const handleDeleteMediaLocation = (state: ISaveState, action: PayloadAction<string>) => {
+const handleDeleteProjectMedia = (state: ISaveState, action: PayloadAction<string>) => {
 	if (!action.payload) {
 		return;
 	}
 
-	state.mediaLocations = state.mediaLocations.filter((file: IFile) => file.name !== action.payload);
+	state.projectMedia = state.projectMedia.filter((file: IFile) => file.name !== action.payload);
 };
 
 /**
@@ -91,8 +93,8 @@ const reducerBuilder = (builder: ActionReducerMapBuilder<ISaveState>) => {
 	builder.addCase(setProjectTitle, handleSetProjectTitle);
 	builder.addCase(setVideoLength, handleSetVideoLength);
 	builder.addCase(setVideoFps, handleSetProjectFps);
-	builder.addCase(addMediaLocation, handleAddMediaLocation);
-	builder.addCase(deleteMediaLocation, handleDeleteMediaLocation);
+	builder.addCase(addProjectMedia, handleAddProjectMedia);
+	builder.addCase(deleteProjectMedia, handleDeleteProjectMedia);
 	builder.addCase(createNewProject.fulfilled, handleCreateNewProject);
 	builder.addCase(closeProject, handleCloseProject);
 };

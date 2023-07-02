@@ -1,10 +1,11 @@
 import { Button, Dropdown, Form, Input, MenuProps } from "antd";
 import React, { FormEvent, useState, DragEvent, Fragment } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "Components/ProjectCreator/ProjectCreator.less";
 import { IFile, ISaveState } from "Interfaces";
-import { createNewProject } from "Data/Actions/Save";
+import { addProjectMedia, createNewProject } from "Data/Actions/Save";
 import { AsyncDispatch } from "Data/Redux/Store";
+import { getProjectMedia } from "@/Data/Selectors/Save";
 
 const fpsOptions: MenuProps["items"] = [
 	{
@@ -44,7 +45,8 @@ export default function ProjectCreator() {
 	const [ submitted, setSubmitted ] = useState<boolean>(false);
 	const [ projectTitle, setProjectTitle ] = useState<string>("Untitled");
 	const [ projectFps, setProjectFps ] = useState<number>(25);
-	const [ projectMedia, setProjectMedia ] = useState<IFile[]>([]);
+	const projectMedia = useSelector(getProjectMedia);
+	const setProjectMedia = (media: IFile | IFile[]) => dispatch(addProjectMedia(media));
 	const compositeFileDragClass = [ "file-drag-area", projectMedia.length === 0 ? "center" : "" ].join(" ");
 
 	const handleProjectTitleChange = (event: FormEvent<HTMLInputElement>) => {
@@ -68,24 +70,19 @@ export default function ProjectCreator() {
 
 		const files = event.dataTransfer.files;
 
-		console.log(files);
-
-		setProjectMedia([
-			...new Set(projectMedia),
-			...Array.from(files).map(value => ({
-				name: value.name,
-				filePath: value.path,
-				size: value.size,
-				codec: value.type
-			}))
-		]);
+		setProjectMedia(Array.from(files).map((value: File) => ({
+			name: value.name,
+			filePath: value.path,
+			size: value.size,
+			codec: value.type
+		}) as IFile));
 	};
 
 	const handleCreateNewProject = () => {
 		const newProject: ISaveState = {
 			projectTitle,
 			fps: projectFps,
-			mediaLocations: projectMedia,
+			projectMedia,
 			saveLocation: "",
 			videoLength: 0
 		};

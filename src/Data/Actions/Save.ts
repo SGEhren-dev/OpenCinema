@@ -10,14 +10,14 @@ export const setVideoFps = createAction<number>("SET_VIDEO_FPS");
 
 export const setSaveLocation = createAction<string>("SET_SAVE_LOCATION");
 
-export const addMediaLocation = createAction<IFile>("ADD_MEDIA_LOCATION");
+export const addProjectMedia = createAction<IFile | IFile[]>("ADD_PROJECT_MEDIA");
 
-export const deleteMediaLocation = createAction<string>("DELETE_MEDIA_LOCATION");
+export const deleteProjectMedia = createAction<string>("DELETE_PROJECT_MEDIA");
 
 export const createNewProject = createAsyncThunk(
 	"CREATE_PROJECT",
 	async (payload: ISaveState) => {
-		return Promise.all(payload.mediaLocations.map((file: IFile) => {
+		return Promise.all(payload.projectMedia.map((file: IFile) => {
 			return requestLoadFileMetaData(file) as Promise<IFile>;
 		})).then((files: IFile[]) => {
 			return {

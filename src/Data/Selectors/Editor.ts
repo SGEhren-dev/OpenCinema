@@ -13,10 +13,6 @@ const editorPaused = (state: IEditorState) => {
 	return state.paused;
 };
 
-const timelineMode = (state: IEditorState) => {
-	return state.timelineMode;
-};
-
 const previewZoomLevel = (state: IEditorState) => {
 	return state.previewZoomLevel;
 };
@@ -33,11 +29,6 @@ export const getEditorView = createSelector(
 export const getEditorPaused = createSelector(
 	getEditorState,
 	editorPaused
-);
-
-export const getTimelineMode = createSelector(
-	getEditorState,
-	timelineMode
 );
 
 export const getPreviewZoomLevel = createSelector(
