@@ -2,6 +2,7 @@ export enum MediaBrowserPage {
 	MY_MEDIA = "MY_MEDIA",
 	MY_IMAGES = "MY_IMAGES",
 	MY_VIDEOS = "MY_VIDEOS",
+	MY_AUDIO = "MY_AUDIO",
 	GIHPY = "GIPHY",
 	STOCK_PHOTOS = "STOCK_PHOTOS"
 }

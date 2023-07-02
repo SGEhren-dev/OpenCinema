@@ -24,12 +24,12 @@
 	.file-drag-area {
 		border: 1px dashed #404040;
 		border-radius: 10px;
-		display: flex;
-		flex-wrap: wrap;
+		display: grid;
 		font-size: 18px;
 		font-style: italic;
-		height: 30%;
-		justify-content: space-evenly;
+		gap: 10px;
+		height: 40%;
+		overflow-x: auto;
 		padding: 15px;
 		width: 75%;
 
@@ -43,12 +43,14 @@
 			font-size: 12px;
 			height: 100px;
 			padding: 0 8px;
-			width: 150px;
+			width: 165px;
 		}
 
-		&.center {
+		&.no-media {
 			align-items: center;
+			display: flex;
 			flex-direction: column;
+			justify-content: center;
 		}
 	}
 
@@ -58,5 +60,17 @@
 		padding: 100px 20px;
 		justify-content: flex-end;
 		width: 100%;
+	}
+
+	@media (min-width: 900px) {
+		.file-drag-area {
+			grid-template-columns: repeat(7, 1fr);
+		}
+	}
+
+	@media (max-width: 600px) {
+		.file-drag-area {
+			grid-template-columns: repeat(3, 1fr);
+		}
 	}
 }

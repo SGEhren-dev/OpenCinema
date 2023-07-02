@@ -54,7 +54,8 @@ async function createWindow() {
 		icon: join(process.env.PUBLIC, "favicon.ico"),
 		webPreferences: {
 			preload,
-			sandbox: false
+			sandbox: false,
+			webSecurity: false
 		},
 	});
 
@@ -84,7 +85,7 @@ async function createWindow() {
 
 app.whenReady().then(() => {
 	// [ REDUX_DEVTOOLS ].map((extension) => {
-	// 	install(extension)
+	// 	install?.(extension)
 	// 		.then((name: string) => console.log(`Installed extension: ${ name }.`))
 	// 		.catch((error) => console.log("An error has occurred: ", error));
 	// });

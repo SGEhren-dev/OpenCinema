@@ -4,6 +4,7 @@ import { initializeStore, store } from "Data/Redux/Store";
 import EditorReducer from "Data/Reducers/Editor";
 import TimelineReducer from "Data/Reducers/Timeline";
 import SaveReducer from "Data/Reducers/Save";
+import MediaBrowserReducer from "Data/Reducers/MediaBrowser";
 
 const persistConfig = {
 	key: "root",
@@ -12,6 +13,7 @@ const persistConfig = {
 
 const reducersMapObject = {
 	Editor: EditorReducer,
+	MediaBrowser: MediaBrowserReducer,
 	Timeline: TimelineReducer,
 	Save: SaveReducer
 };

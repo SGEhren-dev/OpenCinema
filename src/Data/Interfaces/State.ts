@@ -1,8 +1,10 @@
 import { EditorView, TimelineMode } from "Data/Objects/Editor";
 import { IBaseEffect, IFile, IKeyValue, IMedia, ITimelineChannel } from "Interfaces";
+import { MediaBrowserPage } from "Data/Objects/MediaBrowser";
 
 export interface IState {
 	Editor: IEditorState;
+	MediaBrowser: IMediaBrowserState;
 	Save: ISaveState;
 	Timeline: ITimelineState;
 }
@@ -29,5 +31,9 @@ export interface ISaveState {
 	videoLength: number;
 	fps: number;
 	saveLocation: string;
-	mediaLocations: IFile[];
+	projectMedia: IFile[];
+}
+
+export interface IMediaBrowserState {
+	browserPage: MediaBrowserPage;
 }

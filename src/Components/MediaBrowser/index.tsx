@@ -1,9 +1,16 @@
-import React, { Key, ReactNode, useState } from "react";
+import React, { Fragment, Key, ReactNode, useState } from "react";
 import { Menu, MenuProps, Input, Button } from "antd";
 import Icon from "Components/Global/Icon";
-import { MediaBrowserPage } from "@/Data/Objects/MediaBrowser";
-import { GiphyApi } from "@/Data/Objects/Giphy";
+import { MediaBrowserPage } from "Data/Objects/MediaBrowser";
+import { GiphyApi } from "Data/Objects/Giphy";
 import { Grid } from "@giphy/react-components";
+import { useDispatch, useSelector } from "react-redux";
+import { getMediaBrowserPage } from "Data/Selectors/MediaBrowser";
+import { setMediaBrowserPage } from "Data/Actions/MediaBrowser";
+import { IFile, IState } from "Interfaces";
+import { getFilteredProjectMedia } from "Data/Selectors/Save";
+import { ProjectMediaFilter } from "Data/Objects/Save";
+import noVideo from "/video-placeholder.jpg";
 import "Components/MediaBrowser/MediaBrowser.less";
 
 const Giphy = new GiphyApi("EE2izuw58rmKygv003kjGVPnRAwo7ndk");
@@ -23,14 +30,61 @@ function getItem(label: ReactNode, key: Key, icon?: ReactNode, children?: MenuIt
 const items: MenuProps["items"] = [
 	getItem("My Media", "myMedia", <Icon name="camera" />, [
 		getItem("Videos", "myVideos", <Icon name="film" />),
-		getItem("Images", "myImages", <Icon name="image" />)
+		getItem("Images", "myImages", <Icon name="image" />),
+		getItem("Audio", "myAudio", <Icon name="music" />)
 	]),
 	getItem("Giphy", "giphy", <Icon name="file-video" />),
 	getItem("Stock Images", "stock", <Icon name="image" />)
 ];
 
 function RenderMyMediaPage() {
-	return <p>My Media</p>;
+	const page = useSelector(getMediaBrowserPage);
+
+	const getFilter = () => {
+		switch (page) {
+			case MediaBrowserPage.MY_AUDIO:
+				return ProjectMediaFilter.AUDIO;
+			case MediaBrowserPage.MY_IMAGES:
+				return ProjectMediaFilter.IMAGES;
+			case MediaBrowserPage.MY_VIDEOS:
+				return ProjectMediaFilter.VIDEOS;
+		}
+	};
+
+	const pageMedia = useSelector((state: IState) => {
+		return getFilteredProjectMedia(state, getFilter());
+	});
+
+	const hasMedia = !pageMedia || pageMedia.length === 0;
+	const noMediaClass = hasMedia ? "no-media" : undefined;
+	const compositeClass = [ "media-content", noMediaClass ].join(" ");
+
+	const renderMedia = (file: IFile) => {
+		const uri = page === MediaBrowserPage.MY_IMAGES ? file.filePath : noVideo;
+
+		return (
+			<div key={ file.name } className="media-card">
+				<img className="thumbnail" src={ uri } />
+				{ file.name.split(".")?.[0] }
+			</div>
+		);
+	};
+
+	let content  = (
+		<Fragment>
+			{ pageMedia?.map(renderMedia) }
+		</Fragment>
+	);
+
+	if (!pageMedia || pageMedia.length === 0) {
+		content = <span>Sorry, you dont appear to have media loaded.</span>;
+	}
+
+	return (
+		<div className={ compositeClass }>
+			{ content }
+		</div>
+	);
 }
 
 interface IGiphyPageProps {
@@ -55,8 +109,10 @@ function RenderStockPhotoMediaPage() {
 }
 
 export default function MediaBrowser() {
+	const dispatch = useDispatch();
 	const [ searchTerm, setSearchTerm ] = useState<string>("");
-	const [ currentBrowserPage, setCurrentBrowserPage ] = useState<MediaBrowserPage>(MediaBrowserPage.MY_MEDIA);
+	const currentBrowserPage = useSelector(getMediaBrowserPage);
+	const setCurrentBrowserPage = (page: MediaBrowserPage) => dispatch(setMediaBrowserPage(page));
 
 	const onClick: MenuProps["onClick"] = (e) => {
 		switch (e.key) {
@@ -69,6 +125,9 @@ export default function MediaBrowser() {
 			case "myImages":
 				setCurrentBrowserPage(MediaBrowserPage.MY_IMAGES);
 				break;
+			case "myAudio":
+				setCurrentBrowserPage(MediaBrowserPage.MY_AUDIO);
+				break;
 			case "giphy":
 				setCurrentBrowserPage(MediaBrowserPage.GIHPY);
 				break;
@@ -79,12 +138,12 @@ export default function MediaBrowser() {
 	};
 
 	const renderSelectedPage = () => {
-		console.log(searchTerm);
-
 		switch (currentBrowserPage) {
 			case MediaBrowserPage.MY_MEDIA:
 				return <RenderMyMediaPage />;
 			case MediaBrowserPage.MY_IMAGES:
+				return <RenderMyMediaPage />;
+			case MediaBrowserPage.MY_AUDIO:
 				return <RenderMyMediaPage />;
 			case MediaBrowserPage.MY_VIDEOS:
 				return <RenderMyMediaPage />;
