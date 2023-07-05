@@ -8,7 +8,7 @@ import Icon from "Components/Global/Icon";
 import { IVector2 } from "Data/Objects/World";
 import TimelineToolbar from "Components/Timeline/TimelineToolbar";
 import { getComposedVideoLength } from "Data/Selectors/Save";
-import { TimeUnits } from "@/Shared/Objects/Time";
+import { TimeUnits } from "Shared/Objects/Time";
 import { setTimelineZoomLevel } from "Data/Actions/Timeline";
 import "Components/Timeline/Timeline.less";
 
@@ -17,8 +17,7 @@ interface IChannelMediaProps {
 	type: TimelineChannelType;
 }
 
-function RenderChannelMedia(props: IChannelMediaProps) {
-	const { channelMedia, type } = props;
+function RenderChannelMedia({ channelMedia, type }: IChannelMediaProps) {
 	const color = type === TimelineChannelType.AUDIO ? "#48BB78" : "#63B3ED";
 	const timelineZoomLevel = useSelector(getTimelineZoomLevel);
 

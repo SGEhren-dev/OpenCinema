@@ -22,9 +22,7 @@ interface IAddChannelProps {
 	onChannelAdd: (channel: ITimelineChannel) => void;
 }
 
-function RenderAddChannelDropdown(props: IAddChannelProps) {
-	const { onChannelAdd } = props;
-
+function RenderAddChannelDropdown({ onChannelAdd }: IAddChannelProps) {
 	const handleCreateNewChannel: MenuProps["onClick"] = (event) => {
 		const uuid = uuidv4();
 		const newChannel: ITimelineChannel = {
