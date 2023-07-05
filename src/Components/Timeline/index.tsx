@@ -17,7 +17,7 @@ interface IChannelMediaProps {
 	type: TimelineChannelType;
 }
 
-function RenderChannelMedia({ channelMedia, type }: IChannelMediaProps) {
+function ChannelMedia({ channelMedia, type }: IChannelMediaProps) {
 	const color = type === TimelineChannelType.AUDIO ? "#48BB78" : "#63B3ED";
 	const timelineZoomLevel = useSelector(getTimelineZoomLevel);
 
@@ -44,7 +44,7 @@ function RenderChannelMedia({ channelMedia, type }: IChannelMediaProps) {
 	);
 }
 
-function RenderTimelineChannelInfo(channel: ITimelineChannel, index: number) {
+function TimelineChannelInfo(channel: ITimelineChannel, index: number) {
 	const { uuid, muted, type, name } = channel;
 	const compositeClass = [ "channel-info", index % 2 === 0 ? "light" : "" ].join(" ");
 	const iconName = muted ? "microphone-slash" : "microphone";
@@ -64,14 +64,14 @@ function RenderTimelineChannelInfo(channel: ITimelineChannel, index: number) {
 	);
 }
 
-function RenderTimelineChannel(channel: ITimelineChannel, index: number, length: number, zoomLevel: number, media: IMedia[]) {
+function TimelineChannel(channel: ITimelineChannel, index: number, length: number, zoomLevel: number, media: IMedia[]) {
 	const { uuid, type } = channel;
 	const width = length * zoomLevel;
 	const compositeClass = [ "channel-data", index % 2 === 0 ? "light" : "" ].join(" ");
 
 	return (
 		<div key={ uuid } className={ compositeClass } style={ { width: `${ width }px` } }>
-			<RenderChannelMedia channelMedia={ media } type={ type } />
+			<ChannelMedia channelMedia={ media } type={ type } />
 		</div>
 	);
 }
@@ -146,7 +146,7 @@ export default function Timeline() {
 				onWheel={ handleMouseWheelZooming }
 			>
 				<div className="channel-info-sider">
-					{ Object.values(timelineChannels).map(RenderTimelineChannelInfo) }
+					{ Object.values(timelineChannels).map(TimelineChannelInfo) }
 				</div>
 				<div className="channel-data-container" style={ { width: `${ 5 * TimeUnits.MINUTES }px` } }>
 					<div
@@ -155,7 +155,7 @@ export default function Timeline() {
 					/>
 					{
 						Object.values(timelineChannels).map((channel, index) =>
-							RenderTimelineChannel(channel, index, videoLength, timelineZoomLevel, channelMedia[ channel.uuid ]))
+							TimelineChannel(channel, index, videoLength, timelineZoomLevel, channelMedia[ channel.uuid ]))
 					}
 				</div>
 			</div>
