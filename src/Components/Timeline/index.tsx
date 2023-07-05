@@ -1,9 +1,9 @@
 import React, { Fragment, RefObject, createRef, useState } from "react";
 import {
-	getChannelMediaByUuid, getPlayheadTime, getTimelineChannels, getTimelineZoomLevel
+	getChannelMedia, getPlayheadTime, getTimelineChannels, getTimelineZoomLevel
 } from "Data/Selectors/Timeline";
 import { useDispatch, useSelector } from "react-redux";
-import { IMedia, IState, ITimelineChannel, TimelineChannelType } from "Interfaces";
+import { IMedia, ITimelineChannel, TimelineChannelType } from "Interfaces";
 import Icon from "Components/Global/Icon";
 import { IVector2 } from "Data/Objects/World";
 import TimelineToolbar from "Components/Timeline/TimelineToolbar";
@@ -12,7 +12,13 @@ import { TimeUnits } from "@/Shared/Objects/Time";
 import { setTimelineZoomLevel } from "Data/Actions/Timeline";
 import "Components/Timeline/Timeline.less";
 
-function RenderChannelMedia(channelMedia: IMedia[], type: TimelineChannelType) {
+interface IChannelMediaProps {
+	channelMedia: IMedia[];
+	type: TimelineChannelType;
+}
+
+function RenderChannelMedia(props: IChannelMediaProps) {
+	const { channelMedia, type } = props;
 	const color = type === TimelineChannelType.AUDIO ? "#48BB78" : "#63B3ED";
 	const timelineZoomLevel = useSelector(getTimelineZoomLevel);
 
@@ -59,17 +65,14 @@ function RenderTimelineChannelInfo(channel: ITimelineChannel, index: number) {
 	);
 }
 
-function RenderTimelineChannel(channel: ITimelineChannel, index: number) {
+function RenderTimelineChannel(channel: ITimelineChannel, index: number, length: number, zoomLevel: number, media: IMedia[]) {
 	const { uuid, type } = channel;
-	const videoLength = useSelector(getComposedVideoLength);
-	const channelMedia = useSelector((state: IState) => getChannelMediaByUuid(state, uuid));
-	const timelineZoomLevel = useSelector(getTimelineZoomLevel);
-	const width = videoLength * timelineZoomLevel;
+	const width = length * zoomLevel;
 	const compositeClass = [ "channel-data", index % 2 === 0 ? "light" : "" ].join(" ");
 
 	return (
 		<div key={ uuid } className={ compositeClass } style={ { width: `${ width }px` } }>
-			{ RenderChannelMedia(channelMedia, type) }
+			<RenderChannelMedia channelMedia={ media } type={ type } />
 		</div>
 	);
 }
@@ -80,6 +83,8 @@ export default function Timeline() {
 	const timelineChannels = useSelector(getTimelineChannels);
 	const currentPlayheadTime = useSelector(getPlayheadTime);
 	const timelineZoomLevel = useSelector(getTimelineZoomLevel);
+	const videoLength = useSelector(getComposedVideoLength);
+	const channelMedia = useSelector(getChannelMedia);
 	const [ startPosition, setStartPosition ] = useState<IVector2>({ x: 0, y: 0 });
 	const [ scrollDist, setScrollDist ] = useState<number>(0);
 	const [ mouseHeld, setMouseHeld ] = useState<boolean>(false);
@@ -149,7 +154,10 @@ export default function Timeline() {
 						className="timeline-playhead"
 						style={ { left: `${ (currentPlayheadTime) * timelineZoomLevel }px` } }
 					/>
-					{ Object.values(timelineChannels).map(RenderTimelineChannel) }
+					{
+						Object.values(timelineChannels).map((channel, index) =>
+							RenderTimelineChannel(channel, index, videoLength, timelineZoomLevel, channelMedia[ channel.uuid ]))
+					}
 				</div>
 			</div>
 		</div>
