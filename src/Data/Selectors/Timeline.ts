@@ -30,7 +30,11 @@ const currentTime = (state: ITimelineState) => {
 	return state.currentTime;
 };
 
-const channelMedia = (state: ITimelineState, uuid: string) => {
+const channelMedia = (state: ITimelineState) => {
+	return state.media;
+};
+
+const channelMediaByUuid = (state: ITimelineState, uuid: string) => {
 	return state.media[ uuid ];
 };
 
@@ -68,9 +72,14 @@ export const getPlayheadTime = createSelector(
 	currentTime
 );
 
+export const getChannelMedia = createSelector(
+	getTimelineState,
+	channelMedia
+);
+
 export const getChannelMediaByUuid = createSelector(
 	[ getTimelineState, selectorWithArg<string>() ],
-	channelMedia
+	channelMediaByUuid
 );
 
 export const getChannelEffectsByUuid = createSelector(

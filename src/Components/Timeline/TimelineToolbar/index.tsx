@@ -18,11 +18,11 @@ const channelItems: MenuProps["items"] = [
 	}
 ];
 
-function RenderAddChannelDropdown() {
-	const dispatch = useDispatch();
-	const createNewChannel = (channel: ITimelineChannel) => dispatch(createTimelineChannel(channel));
+interface IAddChannelProps {
+	onChannelAdd: (channel: ITimelineChannel) => void;
+}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function RenderAddChannelDropdown({ onChannelAdd }: IAddChannelProps) {
 	const handleCreateNewChannel: MenuProps["onClick"] = (event) => {
 		const uuid = uuidv4();
 		const newChannel: ITimelineChannel = {
@@ -32,7 +32,7 @@ function RenderAddChannelDropdown() {
 			muted: false
 		};
 
-		createNewChannel(newChannel);
+		onChannelAdd(newChannel);
 	};
 
 	return (
@@ -46,10 +46,11 @@ export default function TimelineToolbar() {
 	const dispatch = useDispatch();
 	const timelineZoomLevel = useSelector(getTimelineZoomLevel);
 	const updateTimelineZoom = (zoom: number) => dispatch(setTimelineZoomLevel(zoom));
+	const createNewChannel = (channel: ITimelineChannel) => dispatch(createTimelineChannel(channel));
 
 	return (
 		<div className="timeline-toolbar">
-			<RenderAddChannelDropdown />
+			<RenderAddChannelDropdown onChannelAdd={ createNewChannel } />
 			<div className="right-align row">
 				<Slider
 					value={ timelineZoomLevel }
