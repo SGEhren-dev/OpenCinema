@@ -1,8 +1,7 @@
 import { Button } from "antd";
+import type { ButtonType } from "antd/es/button";
 import React, { useRef } from "react";
 import "Components/Global/FileSelect/FileSelect.less";
-
-type ButtonType = "default" | "primary" | "ghost" | "dashed" | "link" | "text";
 
 interface IFileSelectProps {
 	onFilesSelected: (payload: File[]) => void;
