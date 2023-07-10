@@ -1,6 +1,5 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { IFile, ISaveState } from "Interfaces";
-import { requestLoadFileMetaData } from "Data/IPC/IpcEvents";
 
 export const setProjectTitle = createAction<string>("SET_PROJECT_TITLE");
 
@@ -17,14 +16,7 @@ export const deleteProjectMedia = createAction<string>("DELETE_PROJECT_MEDIA");
 export const createNewProject = createAsyncThunk(
 	"CREATE_PROJECT",
 	async (payload: ISaveState) => {
-		return Promise.all(payload.projectMedia.map((file: IFile) => {
-			return requestLoadFileMetaData(file) as Promise<IFile>;
-		})).then((files: IFile[]) => {
-			return {
-				...payload,
-				mediaLocations: files
-			};
-		});
+		return payload;
 	}
 );
 
