@@ -1,5 +1,5 @@
 import React, { Fragment, Key, ReactNode, useState } from "react";
-import { Menu, MenuProps, Input, Button } from "antd";
+import { Menu, MenuProps, Input } from "antd";
 import Icon from "Components/Global/Icon";
 import { MediaBrowserPage } from "Data/Objects/MediaBrowser";
 import { GiphyApi } from "Data/Objects/Giphy";
@@ -12,6 +12,8 @@ import { getFilteredProjectMedia } from "Data/Selectors/Save";
 import { ProjectMediaFilter } from "Data/Objects/Save";
 import noVideo from "/video-placeholder.jpg";
 import "Components/MediaBrowser/MediaBrowser.less";
+import { FileSelect } from "../Global/FileSelect";
+import { addProjectMedia } from "@/Data/Actions/Save";
 
 const Giphy = new GiphyApi("EE2izuw58rmKygv003kjGVPnRAwo7ndk");
 const { Search } = Input;
@@ -110,9 +112,19 @@ function RenderStockPhotoMediaPage() {
 
 export default function MediaBrowser() {
 	const dispatch = useDispatch();
+	const addNewProjectMedia = (media: IFile | IFile[]) => dispatch(addProjectMedia(media));
 	const [ searchTerm, setSearchTerm ] = useState<string>("");
 	const currentBrowserPage = useSelector(getMediaBrowserPage);
 	const setCurrentBrowserPage = (page: MediaBrowserPage) => dispatch(setMediaBrowserPage(page));
+
+	const handleFileSelect = (files: File[]) => {
+		addNewProjectMedia(files.map((file: File) => ({
+			name: file.name,
+			filePath: file.path,
+			size: file.size,
+			codec: file.type
+		}) as IFile));
+	};
 
 	const onClick: MenuProps["onClick"] = (e) => {
 		switch (e.key) {
@@ -159,7 +171,7 @@ export default function MediaBrowser() {
 			return;
 		}
 
-		return <Button type="default">Import Media</Button>;
+		return <FileSelect type="default" onFilesSelected={ handleFileSelect } />;
 	};
 
 	return (

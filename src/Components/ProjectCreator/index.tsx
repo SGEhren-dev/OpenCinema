@@ -6,6 +6,7 @@ import { IFile, ISaveState } from "Interfaces";
 import { addProjectMedia, createNewProject } from "Data/Actions/Save";
 import { AsyncDispatch } from "Data/Redux/Store";
 import { getProjectMedia } from "@/Data/Selectors/Save";
+import { FileSelect } from "../Global/FileSelect";
 
 const fpsOptions: MenuProps["items"] = [
 	{
@@ -79,6 +80,15 @@ export default function ProjectCreator() {
 		}) as IFile));
 	};
 
+	const handleFileSelect = (files: File[]) => {
+		setProjectMedia(files.map((file: File) => ({
+			name: file.name,
+			filePath: file.path,
+			size: file.size,
+			codec: file.type
+		}) as IFile));
+	};
+
 	const handleCreateNewProject = () => {
 		const newProject: ISaveState = {
 			projectTitle,
@@ -88,13 +98,17 @@ export default function ProjectCreator() {
 			videoLength: 0
 		};
 
+		console.log(newProject);
+
 		setSubmitted(true);
 		createNewVideoProject(newProject).unwrap()
 			.then(() => {
 				setSubmitted(false);
+				console.log("Created project");
 			})
 			.catch(() => {
 				setSubmitted(false);
+				console.log("Failed to create project");
 			});
 	};
 
@@ -103,7 +117,10 @@ export default function ProjectCreator() {
 			<Fragment>
 				Drag Your Media Here
 				<span>- or -</span>
-				<Button type="primary">Import Media</Button>
+				<FileSelect
+					type="primary"
+					onFilesSelected={ handleFileSelect }
+				/>
 			</Fragment>
 		);
 
