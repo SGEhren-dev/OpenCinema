@@ -6,7 +6,7 @@ import { IFile, ISaveState } from "Interfaces";
 import { addProjectMedia, createNewProject } from "Data/Actions/Save";
 import { AsyncDispatch } from "Data/Redux/Store";
 import { getProjectMedia } from "@/Data/Selectors/Save";
-import { FileSelect } from "../Global/FileSelect";
+import { FileSelect } from "Components/Global/FileSelect";
 
 const fpsOptions: MenuProps["items"] = [
 	{

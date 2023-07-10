@@ -28,6 +28,7 @@ export const FileSelect = (props: IFileSelectProps) => {
 				onChange={ onFileSelect }
 				ref={ fileSelectRef }
 				multiple
+				accept={ "image/*, video/*, audio/*" }
 			/>
 			<Button
 				type={ type }

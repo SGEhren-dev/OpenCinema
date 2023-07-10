@@ -12,7 +12,7 @@ import { getFilteredProjectMedia } from "Data/Selectors/Save";
 import { ProjectMediaFilter } from "Data/Objects/Save";
 import noVideo from "/video-placeholder.jpg";
 import "Components/MediaBrowser/MediaBrowser.less";
-import { FileSelect } from "../Global/FileSelect";
+import { FileSelect } from "Components/Global/FileSelect";
 import { addProjectMedia } from "@/Data/Actions/Save";
 
 const Giphy = new GiphyApi("EE2izuw58rmKygv003kjGVPnRAwo7ndk");
